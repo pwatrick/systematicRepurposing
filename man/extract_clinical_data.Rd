@@ -9,9 +9,7 @@ extract_clinical_data(
   drug_concept_id,
   biomarker_concept_id,
   table_name,
-  table_type,
-  conn,
-  ...
+  table_type
 )
 }
 \arguments{
