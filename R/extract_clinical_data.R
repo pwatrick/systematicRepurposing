@@ -5,10 +5,13 @@
 #' @param biomarker_concept_id A string
 #' @param table_name A string
 #' @param table_type A string, either c("covariates", "drugs", "biomarkers")
-#' @param conn A variable
+#' @param indiation_drug_set A string, with concept_ids for indication drugs, eg,
+#' "({drug_concept_id},1551803,19011061,1351115,1558242,19004048,19051463,19018419,1510813,
+#' 1501617,1592085,1545958,1549686,46275447,1551860,19082770,1586226,19095309,46274162,957797,
+#' 1517824,46287466,19022956,40165636,1518148,19026600,1539403,1526475)"
 #' @export
 
-extract_clinical_data <- function(drug_concept_id, biomarker_concept_id, table_name, table_type) {
+extract_clinical_data <- function(drug_concept_id, biomarker_concept_id, table_name, table_type, indication_drug_set) {
 
   if (table_type == "covariates") {
 
@@ -179,13 +182,50 @@ FROM (
   ON (s2.person_id = s3.person_id AND s2.drug_exposure_start_date = s3.visit_start_date))
 ) s1
 GROUP BY s1.person_id, s1.start_date, s1.end_date, s1.drug_concept_id, s1.drug_exposure_start_date
+),
+indication_drug_set AS
+(
+  SELECT t2.ancestor_concept_id, t2.descendant_concept_id, t3.concept_name AS descendant_concept_name
+  FROM (
+    (
+      SELECT concept_id, concept_name
+      FROM `concept`
+      WHERE domain_id = 'Drug'
+      AND concept_id IN {indication_drug_concept_ids}
+    ) t1
+    INNER JOIN
+    (
+      SELECT ancestor_concept_id, descendant_concept_id
+      FROM `concept_ancestor`
+    ) t2
+    ON (t1.concept_id = t2.ancestor_concept_id)
+    INNER JOIN
+    (
+      SELECT concept_id, concept_name
+      FROM `concept`
+      WHERE domain_id = 'Drug'
+    ) t3
+    ON (t2.descendant_concept_id = t3.concept_id)
+       )
+),
+pw_drugs_selected AS
+(
+  SELECT s1.person_id, s1.start_date, s1.end_date, s1.drug_concept_id, s1.drug_exposure_start_date
+  FROM (
+    (
+      SELECT s2.person_id, s2.start_date, s2.end_date, s2.drug_concept_id, s2.drug_exposure_start_date
+      FROM (SELECT * FROM pw_drugs_out) s2
+      INNER JOIN(SELECT * FROM indication_drug_set) s3
+      ON (s2.drug_concept_id = s3.descendant_concept_id)
+    )
+      ) s1
 )
 SELECT po.person_id,
        po.start_date,
        po.end_date,
        po.drug_exposure_start_date,
        po.drug_concept_id
- FROM (SELECT * FROM pw_drugs_out) po
+ FROM (SELECT * FROM pw_drugs_selected) po
 group by po.person_id, po.start_date, po.end_date, po.drug_exposure_start_date, po.drug_concept_id;")
   }
 

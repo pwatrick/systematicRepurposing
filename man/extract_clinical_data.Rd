@@ -9,7 +9,8 @@ extract_clinical_data(
   drug_concept_id,
   biomarker_concept_id,
   table_name,
-  table_type
+  table_type,
+  indication_drug_set
 )
 }
 \arguments{
@@ -21,7 +22,10 @@ extract_clinical_data(
 
 \item{table_type}{A string, either c("covariates", "drugs", "biomarkers")}
 
-\item{conn}{A variable}
+\item{indiation_drug_set}{A string, with concept_ids for indication drugs, eg,
+"({drug_concept_id},1551803,19011061,1351115,1558242,19004048,19051463,19018419,1510813,
+1501617,1592085,1545958,1549686,46275447,1551860,19082770,1586226,19095309,46274162,957797,
+1517824,46287466,19022956,40165636,1518148,19026600,1539403,1526475)"}
 }
 \description{
 Function to extract clinical data from All of Us dataset
