@@ -1,0 +1,10 @@
+title: systematicRepurposing
+url: http://pwatrick.github.io/systematicRepurposing
+navbar:
+  left:
+    - icon: fa-home
+      href: index.html
+    - text: "Articles"
+      menu:
+      -  text: All of Us Clinical Validation Example
+         href: articles/all_of_us_example.html

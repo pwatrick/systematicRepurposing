@@ -1,0 +1,34 @@
+Package: systematicRepurposing
+Title: Integrates Transriptomics and Clinical Data to Identify Drug Repurposing Candidates
+Version: 0.1
+Authors@R:
+    person(given = "Patrick",
+           family = "Wu",
+           role = c("aut", "cre"),
+           email = "pwatrick510@gmail.com",
+           comment = c(ORCID = "0000-0002-1437-6688"))
+Description: This package contains functions to integrate transcriptomic and clinical data to identify drug repurposing candidates.
+URL: https://pwatrick.github.io/systematicRepurposing/, https://github.com/pwatrick/systematicRepurposing
+License: Apache License (>= 2)
+BugReports: https://github.com/pwatrick/systematicRepurposing/issues
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
+Suggests:
+    testthat (>= 3.0.0),
+    knitr,
+    rmarkdown
+Config/testthat/edition: 3
+Imports:
+    lubridate,
+    glue,
+    ddiwas,
+    magrittr,
+    DT,
+    broom,
+    vroom
+Depends:
+    R (>= 2.10),
+    tidyverse
+VignetteBuilder: knitr
