@@ -2,6 +2,7 @@
 
 export(add_subanalysis_flags)
 export(analyze_clinical_data)
+export(clean_process_clinical_data)
 export(define_observation_periods)
 export(extract_clinical_data)
 export(map_drugs_to_ingredients)
