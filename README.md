@@ -30,7 +30,7 @@ This package was developed in RStudio.
 
 ### Development status
 
-This package is ready for use.  
+This package is still in development, not ready for use.
 
 Citation
 ===========
